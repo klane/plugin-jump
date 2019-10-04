@@ -17,10 +17,19 @@ function marks
       else
         set -l output ""
         for mark_name in $mark_list
-          set -l real_path (readlink $MARKPATH/$mark_name)
-          set output "$output$mark_name -> $real_path"\n
+          if string match -q "*.root" $mark_name
+            for entry in (command ls $MARKPATH/$mark_name)
+              if test -d $MARKPATH/$mark_name/$entry
+                set -l real_path (readlink $MARKPATH/$mark_name)/$entry
+                set output "$output$entry -> $real_path"\n
+              end
+            end
+          else
+            set -l real_path (readlink $MARKPATH/$mark_name)
+            set output "$output$mark_name -> $real_path"\n
+          end
         end
-        echo $output | column -t
+        echo $output | sort | column -t
       end
     end
   end
