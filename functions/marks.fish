@@ -17,7 +17,7 @@ function marks
       else
         set -l output ""
         for mark_name in $mark_list
-          set -l real_path (readlink $MARKPATH/$mark_name)
+          set -l real_path (realpath $MARKPATH/$mark_name)
           if string match -q "*.root" $mark_name
             for entry in (command ls $MARKPATH/$mark_name)
               if test -d $MARKPATH/$mark_name/$entry
